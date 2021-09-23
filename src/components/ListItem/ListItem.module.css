@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 1182px;
+  margin-bottom: 20px;
+  border: 5px solid #333;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doneContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 1182px;
+  margin-bottom: 20px;
+  border: 5px solid #333;
+  background-color: rgb(17, 197, 17);
+}
+
+.selectedContainer {
+  display: flex;
+  flex-direction: row;
+  width: 1182px;
+  margin-bottom: 20px;
+  border: 5px solid rgb(255, 0, 170);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectedDoneContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 1182px;
+  margin-bottom: 20px;
+  border: 5px solid rgb(255, 0, 170);
+  background-color: rgb(17, 197, 17);
+}
+
+.text {
+  font-size: 50px;
+}
+
+.doneText {
+  font-size: 50px;
+  text-decoration: line-through;
+}
+
+.remove {
+  font-size: 50px;
+  cursor: pointer;
+  margin-right: 15px;
+  transition: all 0.3s linear;
+}
+
+.remove:hover {
+  cursor: pointer;
+  color: rgb(238, 255, 0);
+
+  animation: rotate 0.3s linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+.done {
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+  font-size: 50px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-right: 5px solid #333;
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+}
