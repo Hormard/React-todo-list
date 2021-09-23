@@ -5,7 +5,15 @@ function getId() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
 
-export function Form({ onClick, onClickdelete, onClickDone, todos }) {
+export function Form({
+  onClick,
+  onClickdelete,
+  onClickDone,
+  onClickInProgress,
+  onClickInShowDone,
+  onClickAll,
+  mainTodos,
+}) {
   const [text, setText] = useState("");
 
   const onClickAdd = () => {
@@ -24,12 +32,12 @@ export function Form({ onClick, onClickdelete, onClickDone, todos }) {
   };
 
   const deleteSelected = () => {
-    const filteredTodos = todos.filter((item) => item.isSelect === false);
+    const filteredTodos = mainTodos.filter((item) => item.isSelect === false);
     onClickdelete(filteredTodos);
   };
 
   const doneSelected = () => {
-    const filteredTodos = todos.map((item) => {
+    const filteredTodos = mainTodos.map((item) => {
       if (item.isSelect === true) {
         item.isDone = true;
         item.isSelect = false;
@@ -37,6 +45,22 @@ export function Form({ onClick, onClickdelete, onClickDone, todos }) {
       return item;
     });
     onClickDone(filteredTodos);
+  };
+
+  const showInProgress = () => {
+    const filteredTodos = mainTodos.filter((item) => item.isDone === false);
+    onClickInProgress(filteredTodos);
+  };
+
+  const showDone = () => {
+    const filteredTodos = mainTodos.filter((item) => item.isDone === true);
+    onClickInShowDone(filteredTodos);
+  };
+
+  const showAll = () => {
+    const newTodos = mainTodos;
+
+    onClickAll(newTodos);
   };
 
   return (
@@ -50,6 +74,17 @@ export function Form({ onClick, onClickdelete, onClickDone, todos }) {
         />
         <button className={styles.button} onClick={onClickAdd}>
           Add
+        </button>
+      </div>
+      <div className={styles.buttons}>
+        <button className={styles.button} onClick={showAll}>
+          Show All
+        </button>
+        <button className={styles.button} onClick={showInProgress}>
+          Show in progress
+        </button>
+        <button className={styles.button} onClick={showDone}>
+          Show done
         </button>
       </div>
       <div className={styles.buttons}>
