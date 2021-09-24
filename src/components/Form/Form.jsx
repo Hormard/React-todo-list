@@ -21,6 +21,7 @@ export function Form({
       text: text,
       isDone: false,
       isSelect: false,
+      isRedacted: false,
       id: getId(),
     };
     onClick(todo);

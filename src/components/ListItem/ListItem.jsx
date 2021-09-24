@@ -1,14 +1,20 @@
 import styles from "./ListItem.module.css";
+import { useState } from "react";
 
 export function ListItem({
   text,
   id,
   isDone,
   isSelect,
+  isRedacted,
   onClickDone,
   onClickDelete,
   onDoubleClick,
+  onClickRedacted,
+  onChange,
 }) {
+  const [newText, setText] = useState(text);
+
   function changeTodo() {
     if (isDone === true && isSelect === true) {
       return styles.selectedDoneContainer;
@@ -21,6 +27,10 @@ export function ListItem({
     }
   }
 
+  function onChangeInput(event) {
+    setText(event.target.value);
+  }
+
   return (
     <div onDoubleClick={() => onDoubleClick(id)} className={changeTodo()}>
       <div className={styles.wrap}>
@@ -31,9 +41,33 @@ export function ListItem({
             &#128504;
           </div>
         )}
-        <p className={isDone === false ? styles.text : styles.doneText}>
-          {text}
-        </p>
+        {isRedacted === false ? (
+          <div
+            className={styles.redact}
+            onClick={() => onClickRedacted({ id, newText })}
+          >
+            &#11140;
+          </div>
+        ) : (
+          <div
+            className={styles.redact}
+            onClick={() => onClickRedacted({ id, newText })}
+          >
+            &#11142;
+          </div>
+        )}
+        {isRedacted === false ? (
+          <p className={isDone === false ? styles.text : styles.doneText}>
+            {text}
+          </p>
+        ) : (
+          <input
+            value={newText}
+            onChange={onChangeInput}
+            className={styles.input}
+            placeholder={text}
+          />
+        )}
       </div>
       <div className={styles.remove} onClick={() => onClickDelete(id)}>
         &#10006;

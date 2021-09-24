@@ -54,6 +54,21 @@ export class TodoList extends React.Component {
     });
   };
 
+  onClickRedacted = ({ id, newText }) => {
+    const changedTodos = this.state.mainTodos.map((todo) => {
+      if (todo.id === id) {
+        todo.isRedacted = !todo.isRedacted;
+        todo.text = newText;
+      }
+      return todo;
+    });
+
+    this.setState({
+      todos: changedTodos,
+      mainTodos: changedTodos,
+    });
+  };
+
   deleteSelected = (filteredTodos) => {
     this.setState({ todos: filteredTodos, mainTodos: filteredTodos });
   };
@@ -95,10 +110,12 @@ export class TodoList extends React.Component {
                 text={item.text}
                 isDone={item.isDone}
                 isSelect={item.isSelect}
+                isRedacted={item.isRedacted}
                 id={item.id}
                 onClickDone={this.onClickDone}
                 onClickDelete={this.onClickDelete}
                 onDoubleClick={this.onDoubleClick}
+                onClickRedacted={this.onClickRedacted}
               />
             );
           })}
