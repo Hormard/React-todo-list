@@ -17,5 +17,8 @@
 
 .title {
   text-align: center;
+  font-family: "Raleway", sans-serif;
+  font-size: 50px;
+  font-weight: 800;
   color: rgb(58, 58, 56);
 }

@@ -67,7 +67,12 @@ export function TodoList() {
     const changedTodos: any = mainTodos.map((todo: any) => {
       if (todo.id === id) {
         todo.isRedacted = !todo.isRedacted;
-        todo.text = newText;
+        if (newText === "") {
+          alert("Enter somethink");
+          return todo;
+        } else {
+          todo.text = newText;
+        }
       }
       return todo;
     });

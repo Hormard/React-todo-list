@@ -116,10 +116,10 @@ export function Form({
           Show All ({mainTodos.length})
         </button>
         <button className={styles.button} onClick={showInProgress}>
-          Show in progress({getInProgress()})
+          Show in progress ({getInProgress()})
         </button>
         <button className={styles.button} onClick={showDone}>
-          Show done({getDone()})
+          Show done ({getDone()})
         </button>
       </div>
       {checkIsSelected() ? (

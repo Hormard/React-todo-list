@@ -51,12 +51,12 @@ export function ListItem({
   return (
     <div onDoubleClick={() => onDoubleClick(id)} className={changeTodo()}>
       <div className={styles.wrap}>
-        {isDone === false ? (
-          <div className={styles.done} onClick={() => onClickDone(id)}></div>
-        ) : (
+        {isDone ? (
           <div className={styles.done} onClick={() => onClickDone(id)}>
             &#128504;
           </div>
+        ) : (
+          <div className={styles.done} onClick={() => onClickDone(id)}></div>
         )}
         <div
           className={styles.redact}
@@ -64,11 +64,7 @@ export function ListItem({
         >
           {isRedacted === false ? "⮄" : `⮆`}
         </div>
-        {isRedacted === false ? (
-          <p className={isDone === false ? styles.text : styles.doneText}>
-            {text}
-          </p>
-        ) : (
+        {isRedacted ? (
           <input
             onKeyDown={(event) => pressEnter(event)}
             value={newText}
@@ -76,6 +72,10 @@ export function ListItem({
             className={styles.input}
             placeholder={text}
           />
+        ) : (
+          <p className={isDone === false ? styles.text : styles.doneText}>
+            {text}
+          </p>
         )}
       </div>
       <div className={styles.remove} onClick={() => onClickDelete(id)}>
