@@ -5,6 +5,22 @@ function getId() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
 
+export interface IForm {
+  onClick(todo: object): void;
+  onClickdelete(todo: object): void;
+  onClickDone(todo: object): void;
+  onClickInProgress(todo: object): void;
+  onClickInShowDone(todo: object): void;
+  onClickAll(todo: object): void;
+  mainTodos: {
+    text: string;
+    isDone: boolean;
+    isSelect: boolean;
+    isRedacted: boolean;
+    id: string;
+  }[];
+}
+
 export function Form({
   onClick,
   onClickdelete,
@@ -13,22 +29,36 @@ export function Form({
   onClickInShowDone,
   onClickAll,
   mainTodos,
-}) {
+}: IForm) {
   const [text, setText] = useState("");
 
-  const onClickAdd = () => {
-    const todo = {
-      text: text,
-      isDone: false,
-      isSelect: false,
-      isRedacted: false,
-      id: getId(),
-    };
-    onClick(todo);
-    setText("");
+  const getInProgress = () => {
+    const filteredTodos = mainTodos.filter((item) => item.isDone === false);
+    return filteredTodos.length;
   };
 
-  const onChangeInput = (event) => {
+  const getDone = () => {
+    const filteredTodos = mainTodos.filter((item) => item.isDone === true);
+    return filteredTodos.length;
+  };
+
+  const onClickAdd = () => {
+    if (text === "") {
+      alert("Enter something");
+    } else {
+      const todo = {
+        text: text,
+        isDone: false,
+        isSelect: false,
+        isRedacted: false,
+        id: getId(),
+      };
+      onClick(todo);
+      setText("");
+    }
+  };
+
+  const onChangeInput = (event: any) => {
     setText(event.target.value);
   };
 
@@ -64,6 +94,10 @@ export function Form({
     onClickAll(newTodos);
   };
 
+  const checkIsSelected = () => {
+    return mainTodos.some((el) => el.isSelect);
+  };
+
   return (
     <div className={styles.wrap}>
       <div className={styles.contaiiner}>
@@ -79,23 +113,25 @@ export function Form({
       </div>
       <div className={styles.buttons}>
         <button className={styles.button} onClick={showAll}>
-          Show All
+          Show All ({mainTodos.length})
         </button>
         <button className={styles.button} onClick={showInProgress}>
-          Show in progress
+          Show in progress({getInProgress()})
         </button>
         <button className={styles.button} onClick={showDone}>
-          Show done
+          Show done({getDone()})
         </button>
       </div>
-      <div className={styles.buttons}>
-        <button className={styles.button} onClick={doneSelected}>
-          Done Selected
-        </button>
-        <button className={styles.button} onClick={deleteSelected}>
-          Delete Selected
-        </button>
-      </div>
+      {checkIsSelected() ? (
+        <div className={styles.buttons}>
+          <button className={styles.button} onClick={doneSelected}>
+            Done Selected
+          </button>
+          <button className={styles.button} onClick={deleteSelected}>
+            Delete Selected
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

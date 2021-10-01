@@ -1,6 +1,18 @@
 import styles from "./ListItem.module.css";
 import { useState } from "react";
 
+export interface IListItem {
+  text: string;
+  id: string;
+  isDone: boolean;
+  isSelect: boolean;
+  isRedacted: boolean;
+  onClickDone(id: string): void;
+  onClickDelete(id: string): void;
+  onDoubleClick(id: string): void;
+  onClickRedacted(id: string, newText: any): void;
+}
+
 export function ListItem({
   text,
   id,
@@ -11,23 +23,28 @@ export function ListItem({
   onClickDelete,
   onDoubleClick,
   onClickRedacted,
-  onChange,
-}) {
+}: IListItem) {
   const [newText, setText] = useState(text);
 
   function changeTodo() {
-    if (isDone === true && isSelect === true) {
+    if (isDone && isSelect) {
       return styles.selectedDoneContainer;
-    } else if (isDone === true && isSelect === false) {
+    } else if (isDone && isSelect === false) {
       return styles.doneContainer;
-    } else if (isDone === false && isSelect === true) {
+    } else if (isDone === false && isSelect) {
       return styles.selectedContainer;
     } else {
       return styles.container;
     }
   }
 
-  function onChangeInput(event) {
+  function pressEnter(event: any) {
+    if (event.key === "Enter") {
+      return onClickRedacted(id, newText);
+    }
+  }
+
+  function onChangeInput(event: any) {
     setText(event.target.value);
   }
 
@@ -41,27 +58,19 @@ export function ListItem({
             &#128504;
           </div>
         )}
-        {isRedacted === false ? (
-          <div
-            className={styles.redact}
-            onClick={() => onClickRedacted({ id, newText })}
-          >
-            &#11140;
-          </div>
-        ) : (
-          <div
-            className={styles.redact}
-            onClick={() => onClickRedacted({ id, newText })}
-          >
-            &#11142;
-          </div>
-        )}
+        <div
+          className={styles.redact}
+          onClick={() => onClickRedacted(id, newText)}
+        >
+          {isRedacted === false ? "⮄" : `⮆`}
+        </div>
         {isRedacted === false ? (
           <p className={isDone === false ? styles.text : styles.doneText}>
             {text}
           </p>
         ) : (
           <input
+            onKeyDown={(event) => pressEnter(event)}
             value={newText}
             onChange={onChangeInput}
             className={styles.input}
