@@ -17,8 +17,9 @@ export function TodoList() {
     let todo: any = localStorage.getItem("todos") || [];
     if (todo.length !== 0) {
       todo = JSON.parse(todo);
-      todo.forEach((el: any) => {
+      todo.forEach((el: IListItem) => {
         el.isRedacted = false;
+        el.isSelect = false;
       });
     }
 
@@ -29,14 +30,14 @@ export function TodoList() {
     localStorage.setItem("todos", JSON.stringify(mainTodos));
   }, [mainTodos]);
 
-  const onClickAdd = (todo: object) => {
-    const newTodos: any = [...mainTodos, todo];
+  const onClickAdd = (todo: IListItem) => {
+    const newTodos: IListItem[] = [...mainTodos, todo];
 
     refreshTodos(newTodos);
   };
 
   const onClickDone = (id: string) => {
-    const changedTodos: any = mainTodos.map((todo: any) => {
+    const changedTodos: IListItem[] = mainTodos.map((todo: IListItem) => {
       if (todo.id === id) {
         todo.isDone = !todo.isDone;
       }
@@ -47,13 +48,15 @@ export function TodoList() {
   };
 
   const onClickDelete = (id: string) => {
-    const filteredTodos: any = mainTodos.filter((item: any) => item.id !== id);
+    const filteredTodos: IListItem[] = mainTodos.filter(
+      (item: IListItem) => item.id !== id
+    );
 
     refreshTodos(filteredTodos);
   };
 
   const onDoubleClick = (id: string) => {
-    const changedTodos: any = mainTodos.map((todo: any) => {
+    const changedTodos: IListItem[] = mainTodos.map((todo: IListItem) => {
       if (todo.id === id) {
         todo.isSelect = !todo.isSelect;
       }
@@ -64,7 +67,7 @@ export function TodoList() {
   };
 
   const onClickRedacted = (id: string, newText: any) => {
-    const changedTodos: any = mainTodos.map((todo: any) => {
+    const changedTodos: IListItem[] = mainTodos.map((todo: IListItem) => {
       if (todo.id === id) {
         todo.isRedacted = !todo.isRedacted;
         if (newText === "") {

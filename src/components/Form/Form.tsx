@@ -31,6 +31,7 @@ export function Form({
   mainTodos,
 }: IForm) {
   const [text, setText] = useState("");
+  const [type, setType] = useState("all");
 
   const getInProgress = () => {
     const filteredTodos = mainTodos.filter((item) => item.isDone === false);
@@ -80,17 +81,19 @@ export function Form({
 
   const showInProgress = () => {
     const filteredTodos = mainTodos.filter((item) => item.isDone === false);
+    setType("inProgress");
     onClickInProgress(filteredTodos);
   };
 
   const showDone = () => {
     const filteredTodos = mainTodos.filter((item) => item.isDone === true);
+    setType("done");
     onClickInShowDone(filteredTodos);
   };
 
   const showAll = () => {
     const newTodos = mainTodos;
-
+    setType("all");
     onClickAll(newTodos);
   };
 
@@ -112,13 +115,24 @@ export function Form({
         </button>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.button} onClick={showAll}>
+        <button
+          className={type === "all" ? styles.buttonClicked : styles.button}
+          onClick={showAll}
+        >
           Show All ({mainTodos.length})
         </button>
-        <button className={styles.button} onClick={showInProgress}>
+        <button
+          className={
+            type === "inProgress" ? styles.buttonClicked : styles.button
+          }
+          onClick={showInProgress}
+        >
           Show in progress ({getInProgress()})
         </button>
-        <button className={styles.button} onClick={showDone}>
+        <button
+          className={type === "done" ? styles.buttonClicked : styles.button}
+          onClick={showDone}
+        >
           Show done ({getDone()})
         </button>
       </div>
